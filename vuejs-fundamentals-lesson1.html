@@ -7,9 +7,9 @@
     </head>
     <body>
         <div id="shopping-list">
-            <div class="header">
+            <!-- <div class="header">
                 <h1> {{ header.toLocaleUpperCase() }} </h1>
-            </div>
+            </div> -->
             <!-- you can replace v-on with @ sign-->
             <!-- VERSION 1 - using js push-->
 
@@ -17,11 +17,35 @@
             <button class="btn btn-primary" @:click="items.push(newItem)">Save Item</button> -->
 
             <!-- VERSION 2 - using vue's functions-->
-            <div class="newform">
+            <!-- <div class="add-item-form">
                 <input v-model="newItem" type="text" placeholder="Add a an item" @keyup.enter="saveItem">
-            
                 <button class="btn btn-primary" @click="saveItem">Save Item</button>
-                </div>
+                <button class="btn btn-primary" @click="cancelItem">Cancel</button> 
+            </div> -->
+
+            <!-- VERSION 3 - using vue's if/else-->
+            <!-- <div class="header">
+                <h1> {{ header.toLocaleUpperCase() }} </h1>
+
+                <button v-if="state === 'default'" class="btn btn-primary" @click="changeState('edit')">Add Item</button>
+                <button v-else class="btn btn-cancel" @click="changeState('default')">Cancel Adding Item</button> 
+            </div> -->
+
+            <!-- <div v-if="state === 'edit'" class="add-item-form">
+                <input v-model="newItem" type="text" placeholder="Add an item" @keyup.enter="saveItem">
+                <button class="btn btn-primary" @click="saveItem">Save Item </button>
+            </div> -->
+            <div class="header">
+                <h1>{{ header.toLocaleUpperCase() }}</h1>
+                <button v-if="state === 'default'" class="btn btn-primary" @click="changeState('edit')">Add Item</button>
+                <button v-else class="btn btn-cancel" @click="changeState('default')">Cancel Adding Item</button>
+            </div>
+
+             <div v-if="state === 'edit'" class="add-item-form">
+                <input v-model="newItem" type="text" placeholder="Add an item" @keyup.enter="saveItem">
+                <button class="btn btn-primary" v-bind:disabled="newItem.length === 0" @click="saveItem">Save Item</button>
+            </div>
+
             <ul>
                 <li v-for="item in items">{{ item }}</li>
             </ul>
@@ -50,7 +74,13 @@
                     saveItem: function() {
                         this.items.push(this.newItem);
                         this.newItem = '';
+                    },
+                    changeState: function(newState) {
+                        this.state = newState;
+                        this.newItem = '';
+                    
                     }
+                    
                 }
             })
         </script>
